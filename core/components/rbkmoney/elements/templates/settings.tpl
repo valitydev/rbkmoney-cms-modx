@@ -1,0 +1,1 @@
+<div id="rbkmoney-panel-settings-div"></div>

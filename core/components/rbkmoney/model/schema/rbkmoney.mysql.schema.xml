@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="rbkmoney" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="rbkmoney"
+       version="1.1">
+
+    <object class="RBKmoneyRecurrentItems" table="RBKmoney_Recurrent_Items" extends="xPDOSimpleObject">
+        <field key="id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="pk" generated="native" />
+        <field key="article" dbtype="varchar" phptype="string" precision="20" null="false" index=""/>
+
+        <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
+            <column key="id" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <object class="RBKmoneyRecurrent" table="RBKmoney_Recurrent" extends="xPDOObject">
+        <field key="id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="pk" generated="native" />
+        <field key="recurrent_customer_id" dbtype="int" phptype="int" precision="10" null="false" index=""/>
+        <field key="amount" dbtype="float" phptype="float" null="false" index=""/>
+        <field key="name" dbtype="varchar" phptype="string" precision="250" null="false" index=""/>
+        <field key="currency" dbtype="varchar" phptype="string" precision="5" null="false" index=""/>
+        <field key="vat_rate" dbtype="varchar" phptype="string" precision="10" null="false" index=""/>
+        <field key="delivery_vat_rate" dbtype="varchar" phptype="string" precision="10" null="false" index=""/>
+        <field key="date" dbtype="datetime" phptype="DateTime" null="false" index=""/>
+        <field key="status" dbtype="varchar" phptype="string" precision="20" null="false" index=""/>
+        <field key="order_id" dbtype="int" phptype="int" precision="11" null="false" index=""/>
+
+        <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
+            <column key="id" length="" collation="A" null="false" />
+        </index>
+
+        <aggregate alias="Customer"
+                   class="RBKmoneyRecurrentCustomers"
+                   local="recurrent_customer_id"
+                   foreign="id"
+                   cardinality="one"
+                   owner="foreign"
+        />
+    </object>
+
+    <object class="RBKmoneyRecurrentCustomers" table="RBKmoney_Recurrent_Customers" extends="xPDOObject">
+        <field key="id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="pk" generated="native" />
+        <field key="user_id" dbtype="int" phptype="int" precision="10" null="false" index=""/>
+        <field key="customer_id" dbtype="varchar" phptype="string" precision="20" null="false" index=""/>
+        <field key="status" dbtype="varchar" phptype="string" precision="20" null="false" index=""/>
+
+        <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
+            <column key="id" length="" collation="A" null="false" />
+        </index>
+
+        <composite alias="Recurrent"
+                   class="RBKmoneyRecurrent"
+                   local="id"
+                   foreign="recurrent_customer_id"
+                   cardinality="many"
+                   owner="local"
+        />
+    </object>
+
+    <object class="RBKmoneyInvoice" table="RBKmoney_Invoice" extends="xPDOObject">
+        <field key="id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="pk" generated="native" />
+        <field key="invoice_id" dbtype="varchar" phptype="string" precision="100" null="false" index=""/>
+        <field key="payload" dbtype="text" phptype="string" null="false" index=""/>
+        <field key="end_date" dbtype="datetime" phptype="DateTime" null="false" index=""/>
+        <field key="order_id" dbtype="int" phptype="int" precision="11" null="false" index=""/>
+
+        <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
+            <column key="id" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+    <object class="RBKmoneySettings" table="RBKmoney_Settings" extends="xPDOObject">
+        <field key="id" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" index="pk" generated="native" />
+        <field key="name" dbtype="varchar" phptype="string" precision="100" null="false" index=""/>
+        <field key="code" dbtype="varchar" phptype="string" precision="20" null="false" index=""/>
+        <field key="value" dbtype="text" phptype="string" null="false" index=""/>
+
+        <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
+            <column key="id" length="" collation="A" null="false" />
+        </index>
+    </object>
+
+</model>
