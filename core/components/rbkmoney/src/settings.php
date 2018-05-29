@@ -1,5 +1,5 @@
 <?php
-const RBK_MONEY_API_URL_SETTING = 'https://api.rbk.money/v1';
+const RBK_MONEY_API_URL_SETTING = 'https://api.rbk.money/v2';
 const RBK_MONEY_CHECKOUT_URL_SETTING = 'https://checkout.rbk.money/checkout.js';
 const INVOICE_LIFETIME_DATE_INTERVAL_SETTING = 'PT2H';
 const END_INVOICE_INTERVAL_SETTING = 'PT5M';
