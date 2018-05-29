@@ -73,8 +73,8 @@ class RBKmoneyPaymentRecurrent
             $this->modx->getOption('core_path') . 'components/rbkmoney/'
         );
 
-        $lang = 'ru';
-        if ($this->modx->getOption('manager_language') != 'ru') {
+        $lang = $this->modx->getOption('manager_language');
+        if (!file_exists($corePath . "lang/settings.$lang.php")) {
             $lang = 'en';
         }
 

@@ -31,7 +31,7 @@ class GetInvoiceByIdRequest extends RBKmoneyDataObject implements GetRequestInte
      */
     public function getPath()
     {
-        return preg_replace('/{invoiceID}/', $this->invoiceId, self::PATH);
+        return str_replace('{invoiceID}', $this->invoiceId, self::PATH);
     }
 
 }

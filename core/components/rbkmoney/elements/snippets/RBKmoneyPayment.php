@@ -60,8 +60,8 @@ class RBKmoneyPayment
             $this->modx->getOption('core_path') . 'components/rbkmoney/'
         );
 
-        $lang = 'ru';
-        if ($this->modx->getOption('manager_language') != $lang) {
+        $lang = $this->modx->getOption('manager_language');
+        if (!file_exists($this->corePath . "lang/settings.$lang.php")) {
             $lang = 'en';
         }
 
@@ -81,8 +81,9 @@ class RBKmoneyPayment
         }
 
         $callbackPath = $this->modx->makeUrl($this->settings['callbackPageId']);
-        $this->settings['callbackUrl'] = "http://{$_SERVER['HTTP_HOST']}/$callbackPath";
-        $this->settings['successUrl'] = "http://{$_SERVER['HTTP_HOST']}";
+        $currentSchema = ((isset($_SERVER['HTTPS']) && preg_match("/^on$/i", $_SERVER['HTTPS'])) ? 'https' : 'http');
+        $this->settings['callbackUrl'] = "$currentSchema://{$_SERVER['HTTP_HOST']}/$callbackPath";
+        $this->settings['successUrl'] = "$currentSchema://{$_SERVER['HTTP_HOST']}";
 
         $this->sender = new Sender(
             new Client(
@@ -136,7 +137,7 @@ class RBKmoneyPayment
 
         if (!empty($rbkMoneyInvoice)) {
             // Даем пользователю 5 минут на заполнение даных карты
-            $diff = new DateInterval('PT5M');
+            $diff = new DateInterval(END_INVOICE_INTERVAL_SETTING);
             $endDate = new DateTime($rbkMoneyInvoice->get('end_date'));
 
             if ($endDate->sub($diff) > new DateTime()) {
@@ -375,7 +376,7 @@ class RBKmoneyPayment
         }
 
         if ($sum === 0) {
-            throw new WrongDataException(RBK_MONEY_ERROR_AMOUNT_IS_NOT_VALID, HTTP_CODE_BAD_REQUEST);
+            throw new WrongDataException(RBK_MONEY_ERROR_AMOUNT_IS_NOT_VALID, RBK_MONEY_HTTP_CODE_BAD_REQUEST);
         }
 
         $endDate = new DateTime();

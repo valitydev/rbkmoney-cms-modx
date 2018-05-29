@@ -1,57 +1,63 @@
 <?php
-define('RBK_MONEY_API_URL_SETTING', 'https://api.rbk.money/v1');
-define('RBK_MONEY_CHECKOUT_URL_SETTING', 'https://checkout.rbk.money/checkout.js');
-define('INVOICE_LIFETIME_DATE_INTERVAL_SETTING', 'PT2H');
-define('MODULE_NAME_SETTING', 'RBKmoney');
-define('MODULE_VERSION_SETTING', '1.0');
-define('FULL_DATE_FORMAT', 'Y-m-d H:i:s');
-define('PROPERTY_PAYMENT_TOOL_DETAILS', 'paymentToolDetails');
-define('PROPERTY_CLIENT_INFO', 'clientInfo');
-define('PROPERTY_PHONE_NUMBER', 'phoneNumber');
-define('PROPERTY_EMAIL', 'email');
-define('PROPERTY_IP', 'ip');
-define('PROPERTY_TAX_MODE', 'taxMode');
-define('PROPERTY_COST', 'cost');
-define('PROPERTY_ID', 'id');
-define('PROPERTY_STATUS', 'status');
-define('PROPERTY_ACTIVE', 'active');
-define('PROPERTY_PUBLIC_KEY', 'publicKey');
-define('PROPERTY_ERROR', 'error');
-define('PROPERTY_REASON', 'reason');
-define('PROPERTY_DESCRIPTION', 'description');
-define('PROPERTY_INVOICE_TEMPLATE_ID', 'invoiceTemplateID');
-define('PROPERTY_CART', 'cart');
-define('PROPERTY_PAYMENT_TOOL', 'paymentTool');
-define('PROPERTY_TOTAL_COUNT', 'totalCount');
-define('PROPERTY_RESULT', 'result');
-define('PROPERTY_SHOP_ID', 'shopID');
-define('PROPERTY_FEE', 'fee');
-define('PROPERTY_GEO_LOCATION_INFO', 'geoLocationInfo');
-define('PROPERTY_METADATA', 'metadata');
-define('RECURRENT_READY_STATUS', 'ready');
-define('RECURRENT_UNREADY_STATUS', 'unready');
-define('TRANSACTION_DATE_FORMAT', 'd.m.Y');
-define('MINIMAL_PHP_VERSION', 50500);
-define('HTTP_CODE_OK', 200);
-define('HTTP_CODE_BAD_REQUEST', 400);
-define('HTTP_CODE_FORBIDDEN', 403);
-define('LOG_FILE_COMMENT', 'Отправьте этот файл в support@rbkmoney.ru');
+const RBK_MONEY_API_URL_SETTING = 'https://api.rbk.money/v1';
+const RBK_MONEY_CHECKOUT_URL_SETTING = 'https://checkout.rbk.money/checkout.js';
+const INVOICE_LIFETIME_DATE_INTERVAL_SETTING = 'PT2H';
+const END_INVOICE_INTERVAL_SETTING = 'PT5M';
+const MODULE_NAME_SETTING = 'RBKmoney';
+const MODULE_VERSION_SETTING = '1.0';
+const FULL_DATE_FORMAT = 'Y-m-d H:i:s';
+const PROPERTY_PAYMENT_TOOL_DETAILS = 'paymentToolDetails';
+const PROPERTY_CLIENT_INFO = 'clientInfo';
+const PROPERTY_PHONE_NUMBER = 'phoneNumber';
+const PROPERTY_EMAIL = 'email';
+const PROPERTY_IP = 'ip';
+const PROPERTY_TAX_MODE = 'taxMode';
+const PROPERTY_COST = 'cost';
+const PROPERTY_ID = 'id';
+const PROPERTY_STATUS = 'status';
+const PROPERTY_ACTIVE = 'active';
+const PROPERTY_PUBLIC_KEY = 'publicKey';
+const PROPERTY_ERROR = 'error';
+const PROPERTY_REASON = 'reason';
+const PROPERTY_DESCRIPTION = 'description';
+const PROPERTY_INVOICE_TEMPLATE_ID = 'invoiceTemplateID';
+const PROPERTY_CART = 'cart';
+const PROPERTY_PAYMENT_TOOL = 'paymentTool';
+const PROPERTY_TOTAL_COUNT = 'totalCount';
+const PROPERTY_RESULT = 'result';
+const PROPERTY_SHOP_ID = 'shopID';
+const PROPERTY_FEE = 'fee';
+const PROPERTY_GEO_LOCATION_INFO = 'geoLocationInfo';
+const PROPERTY_METADATA = 'metadata';
+const RECURRENT_READY_STATUS = 'ready';
+const RECURRENT_UNREADY_STATUS = 'unready';
+const TRANSACTION_DATE_FORMAT = 'd.m.Y';
+const MINIMAL_PHP_VERSION = 50500;
+const RBK_MONEY_HTTP_CODE_OK = 200;
+const RBK_MONEY_HTTP_CODE_BAD_REQUEST = 400;
+const RBK_MONEY_HTTP_CODE_FORBIDDEN = 403;
+const LOG_FILE_COMMENT = 'Отправьте этот файл в support@rbkmoney.ru';
+const RBK_MONEY_CURRENCY_VALUES = [
+    'RUB',
+    'USD',
+    'EUR',
+];
 
 /**
  * Ключи классов
  */
-define('RBK_MONEY_SETTINGS_CLASS', 'RBKmoneySettings');
-define('RBK_MONEY_RECURRENT_CUSTOMERS_CLASS', 'RBKmoneyRecurrentCustomers');
-define('RBK_MONEY_RECURRENT_ITEMS_CLASS', 'RBKmoneyRecurrentItems');
-define('RBK_MONEY_RECURRENT_CLASS', 'RBKmoneyRecurrent');
-define('RBK_MONEY_INVOICE_CLASS', 'RBKmoneyInvoice');
-define('MS_ORDER_CLASS', 'msOrder');
-define('MS_ORDER_STATUS_CLASS', 'msOrderStatus');
-define('MODX_USER_CLASS', 'modUser');
-define('MS_ORDER_PRODUCT_CLASS', 'msOrderProduct');
-define('MS_PAYMENT_CLASS', 'msPayment');
+const RBK_MONEY_SETTINGS_CLASS = 'RBKmoneySettings';
+const RBK_MONEY_RECURRENT_CUSTOMERS_CLASS = 'RBKmoneyRecurrentCustomers';
+const RBK_MONEY_RECURRENT_ITEMS_CLASS = 'RBKmoneyRecurrentItems';
+const RBK_MONEY_RECURRENT_CLASS = 'RBKmoneyRecurrent';
+const RBK_MONEY_INVOICE_CLASS = 'RBKmoneyInvoice';
+const MS_ORDER_CLASS = 'msOrder';
+const MS_ORDER_STATUS_CLASS = 'msOrderStatus';
+const MODX_USER_CLASS = 'modUser';
+const MS_ORDER_PRODUCT_CLASS = 'msOrderProduct';
+const MS_PAYMENT_CLASS = 'msPayment';
+const LOG_FILE_NAME = 'logs.txt';
 define('LOG_FILE_PATH', "{$_SERVER['DOCUMENT_ROOT']}/core/components/rbkmoney/logs");
-define('LOG_FILE_NAME', 'logs.txt');
 
 if (!defined('PHP_VERSION_ID')) {
     $version = explode('.', PHP_VERSION);

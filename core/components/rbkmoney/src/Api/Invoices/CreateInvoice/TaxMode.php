@@ -70,7 +70,7 @@ class TaxMode
     public function __construct($rate)
     {
         if (!in_array($rate, self::$validValues)) {
-            throw new WrongDataException(RBK_MONEY_WRONG_VALUE . ' `rate`', HTTP_CODE_BAD_REQUEST);
+            throw new WrongDataException(RBK_MONEY_WRONG_VALUE . ' `rate`', RBK_MONEY_HTTP_CODE_BAD_REQUEST);
         }
 
         $this->rate = $rate;

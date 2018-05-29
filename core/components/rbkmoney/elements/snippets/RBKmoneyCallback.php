@@ -11,11 +11,12 @@ use src\Api\Payments\CreatePayment\Request\PaymentFlowInstantRequest;
 use src\Api\Webhooks\InvoicesTopicScope;
 use src\Client\Client;
 use src\Client\Sender;
+use src\Exceptions\RBKmoneyException;
 use src\Exceptions\RequestException;
 use src\Helpers\Log;
 use src\Helpers\Logger;
 
-$callback = new RBKmoneyCallback();
+$callback = new RBKmoneyCallback($modx);
 
 $callback->handle();
 
@@ -41,12 +42,11 @@ class RBKmoneyCallback
      */
     private $corePath;
 
-    function __construct()
+    /**
+     * @param modX $modx
+     */
+    function __construct(modX $modx)
     {
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/config.core.php';
-        require_once MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php';
-        require_once MODX_CONNECTORS_PATH . 'index.php';
-
         $this->modx = $modx;
         $this->corePath = $this->modx->getOption(
             'rbkmoney_core_path',
@@ -54,8 +54,8 @@ class RBKmoneyCallback
             $this->modx->getOption('core_path') . 'components/rbkmoney/'
         );
 
-        $lang = 'ru';
-        if ($this->modx->getOption('manager_language') != $lang) {
+        $lang = $this->modx->getOption('manager_language');
+        if (!file_exists($this->corePath . "lang/settings.$lang.php")) {
             $lang = 'en';
         }
 
@@ -74,7 +74,8 @@ class RBKmoneyCallback
             $this->settings[$setting->get('code')] = $setting->get('value');
         }
         $callbackPath = $this->modx->makeUrl($this->settings['callbackPageId']);
-        $this->settings['callbackUrl'] = "http://{$_SERVER['HTTP_HOST']}/$callbackPath";
+        $currentSchema = ((isset($_SERVER['HTTPS']) && preg_match("/^on$/i", $_SERVER['HTTPS'])) ? 'https' : 'http');
+        $this->settings['callbackUrl'] = "$currentSchema://{$_SERVER['HTTP_HOST']}/$callbackPath";
 
         $this->sender = new Sender(
             new Client(
@@ -105,13 +106,11 @@ class RBKmoneyCallback
      */
     public function handle()
     {
-        file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/test.txt', file_get_contents('php://input'));
-        file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/head.txt', getenv('HTTP_CONTENT_SIGNATURE'));
         try {
             $signature = $this->getSignatureFromHeader(getenv('HTTP_CONTENT_SIGNATURE'));
 
             if (empty($signature)) {
-                throw new WrongDataException(RBK_MONEY_WRONG_SIGNATURE, HTTP_CODE_FORBIDDEN);
+                throw new WrongDataException(RBK_MONEY_WRONG_SIGNATURE, RBK_MONEY_HTTP_CODE_FORBIDDEN);
             }
 
             $signDecode = base64_decode(strtr($signature, '-_,', '+/='));
@@ -119,11 +118,11 @@ class RBKmoneyCallback
             $message = file_get_contents('php://input');
 
             if (empty($message)) {
-                throw new WrongDataException(RBK_MONEY_WRONG_VALUE . ' `callback`', HTTP_CODE_BAD_REQUEST);
+                throw new WrongDataException(RBK_MONEY_WRONG_VALUE . ' `callback`', RBK_MONEY_HTTP_CODE_BAD_REQUEST);
             }
 
             if (!$this->verificationSignature($message, $signDecode)) {
-                throw new WrongDataException(RBK_MONEY_WRONG_SIGNATURE, HTTP_CODE_FORBIDDEN);
+                throw new WrongDataException(RBK_MONEY_WRONG_SIGNATURE, RBK_MONEY_HTTP_CODE_FORBIDDEN);
             }
 
             $callback = json_decode($message);
@@ -133,7 +132,7 @@ class RBKmoneyCallback
             } elseif (isset($callback->customer)) {
                 $this->customerCallback($callback->customer);
             }
-        } catch (Exception $exception) {
+        } catch (RBKmoneyException $exception) {
             $this->callbackError($exception);
         }
 
@@ -143,7 +142,7 @@ class RBKmoneyCallback
                 $responseCode = $exception->getCode();
             } else {
                 $responseMessage = '';
-                $responseCode = HTTP_CODE_OK;
+                $responseCode = RBK_MONEY_HTTP_CODE_OK;
             }
 
             $log = new Log(
@@ -195,7 +194,7 @@ class RBKmoneyCallback
         $signature = preg_replace("/alg=(\S+);\sdigest=/", '', $contentSignature);
 
         if (empty($signature)) {
-            throw new WrongDataException(RBK_MONEY_WRONG_SIGNATURE, HTTP_CODE_FORBIDDEN);
+            throw new WrongDataException(RBK_MONEY_WRONG_SIGNATURE, RBK_MONEY_HTTP_CODE_FORBIDDEN);
         }
 
         return $signature;
@@ -271,8 +270,10 @@ class RBKmoneyCallback
             ['user_id' => $customer->metadata->userId]
         );
 
-        $customer->set('status', $status->getValue());
-        $customer->save();
+        if (!empty($customer)) {
+            $customer->set('status', $status->getValue());
+            $customer->save();
+        }
     }
 
     /**
@@ -289,7 +290,7 @@ class RBKmoneyCallback
                 'id' => $callback->invoice->metadata->orderId
             ]);
 
-            if (isset($callback->eventType)) {
+            if (isset($callback->eventType) && !empty($order)) {
                 $type = $callback->eventType;
                 $miniShop2 = $this->modx->getService('miniShop2');
 

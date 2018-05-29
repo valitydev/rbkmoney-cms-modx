@@ -89,10 +89,10 @@ class Transaction
     {
         try {
             if (empty($this->settings['apiKey'])) {
-                throw new WrongDataException(RBK_MONEY_ERROR_API_KEY_IS_NOT_VALID, HTTP_CODE_BAD_REQUEST);
+                throw new WrongDataException(RBK_MONEY_ERROR_API_KEY_IS_NOT_VALID, RBK_MONEY_HTTP_CODE_BAD_REQUEST);
             }
             if (empty($this->settings['shopId'])) {
-                throw new WrongDataException(RBK_MONEY_ERROR_SHOP_ID_IS_NOT_VALID, HTTP_CODE_BAD_REQUEST);
+                throw new WrongDataException(RBK_MONEY_ERROR_SHOP_ID_IS_NOT_VALID, RBK_MONEY_HTTP_CODE_BAD_REQUEST);
             }
         } catch (WrongDataException $exception) {
             echo $exception->getMessage();

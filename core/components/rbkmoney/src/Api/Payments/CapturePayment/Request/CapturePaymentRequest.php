@@ -57,9 +57,17 @@ class CapturePaymentRequest extends RBKmoneyDataObject implements PostRequestInt
      */
     public function getPath()
     {
-        $path = preg_replace('/{invoiceID}/', $this->invoiceId, self::PATH);
+        $search = [
+            '{invoiceID}',
+            '{paymentID}',
+        ];
 
-        return preg_replace('/{paymentID}/', $this->paymentId, $path);
+        $replace = [
+            $this->invoiceId,
+            $this->paymentId,
+        ];
+
+        return str_replace($search, $replace, self::PATH);
     }
 
 }

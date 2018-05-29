@@ -34,7 +34,7 @@ class PayerType
     public function __construct($value)
     {
         if (!in_array($value, $this->validValues)) {
-            throw new WrongDataException(RBK_MONEY_WRONG_VALUE . ' `payerType`', HTTP_CODE_BAD_REQUEST);
+            throw new WrongDataException(RBK_MONEY_WRONG_VALUE . ' `payerType`', RBK_MONEY_HTTP_CODE_BAD_REQUEST);
         }
 
         $this->value = $value;

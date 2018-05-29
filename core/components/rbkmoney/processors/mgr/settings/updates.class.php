@@ -19,8 +19,8 @@ class RBKmoneySettingUpdatesProcessor extends modObjectUpdateProcessor
     {
         $corePath = $this->modx->getOption('rbkmoney_core_path', [], $this->modx->getOption('core_path') . 'components/rbkmoney/');
 
-        $lang = 'ru';
-        if ($this->modx->getOption('manager_language') != 'ru') {
+        $lang = $this->modx->getOption('manager_language');
+        if (!file_exists($corePath . "lang/settings.$lang.php")) {
             $lang = 'en';
         }
 

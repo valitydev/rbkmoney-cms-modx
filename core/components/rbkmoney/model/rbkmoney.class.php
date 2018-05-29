@@ -28,18 +28,18 @@ class RBKmoney
 
         $connectorUrl = $assetsUrl . 'connector.php';
 
-        $lang = 'ru';
-        if ($this->modx->getOption('manager_language') != 'ru') {
+        $lang = $this->modx->getOption('manager_language');
+        if (!file_exists($corePath . "lang/settings.$lang.php")) {
             $lang = 'en';
         }
 
         require $corePath . "lang/settings.$lang.php";
-        require $corePath . "src/autoload.php";
+        require $corePath . 'src/autoload.php';
+        require $corePath . 'src/settings.php';
 
         $modelPath = $this->modx->getOption('core_path') . 'components/minishop2/model/';
         $this->modx->addPackage('minishop2', $modelPath);
 
-        $corePath = $this->modx->getOption('rbkmoney_core_path', null, $this->modx->getOption('core_path') . 'components/rbkmoney/');
         $dbClassPath = $corePath . 'model/rbkmoney/';
         $modx->loadClass('RBKmoneyRecurrentItems', $dbClassPath);
 
@@ -93,11 +93,7 @@ class RBKmoney
                 RBK_MONEY_PARAMETER_USE,
                 RBK_MONEY_PARAMETER_NOT_USE
             ],
-            'currency' => [
-                'RUB',
-                'USD',
-                'EUR',
-            ],
+            'currency' => RBK_MONEY_CURRENCY_VALUES,
             'vatRate' => $vatRates,
             'langConst' => $langConst,
         ], $config);

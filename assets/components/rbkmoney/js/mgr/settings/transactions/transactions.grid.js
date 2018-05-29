@@ -97,23 +97,26 @@ Ext.extend(RBKmoney.grid.TransactionsGrid, MODx.grid.Grid, {
                 listeners: {
                     click: {
                         fn: function () {
-                            var id = this.getSelectedAsList();
+                            var data = this.getSelectionModel().getSelected().json.secondAction;
 
                             MODx.Ajax.request({
                                 url: RBKmoney.config.connector_url,
                                 params: {
-                                    action: 'mgr/settings/removerecurrent',
-                                    id: id,
+                                    action: 'transactionActions',
+                                    invoiceId: data.invoiceId,
+                                    paymentId: data.paymentId,
+                                    method: data.action,
                                 },
                                 listeners: {
                                     success: {
-                                        fn: function () {
+                                        fn: function (response) {
+                                            MODx.msg.alert('', response.message);
                                             this.refresh();
                                         }, scope: this
                                     },
                                     failure: {
                                         fn: function (response) {
-                                            MODx.msg.alert(_('error'), response.message);
+                                            MODx.msg.alert(_('RBK_MONEY_ERROR'), response.message);
                                         }, scope: this
                                     },
                                 }

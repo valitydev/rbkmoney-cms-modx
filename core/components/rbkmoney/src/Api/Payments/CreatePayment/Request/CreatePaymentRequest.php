@@ -58,7 +58,7 @@ class CreatePaymentRequest extends RBKmoneyDataObject implements PostRequestInte
      */
     public function getPath()
     {
-        return preg_replace('/{invoiceID}/', $this->invoiceId, self::PATH);
+        return str_replace('{invoiceID}', $this->invoiceId, self::PATH);
     }
 
 }
