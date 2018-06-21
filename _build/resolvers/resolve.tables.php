@@ -30,8 +30,8 @@ if ($object->xpdo) {
 
             $manager = $modx->getManager();
 
-            foreach ($objects as $tmp) {
-                $manager->createObjectContainer($tmp);
+            foreach ($objects as $object) {
+                $manager->createObjectContainer($object);
             }
 
             $settings = [
