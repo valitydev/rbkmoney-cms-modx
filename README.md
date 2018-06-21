@@ -32,7 +32,7 @@
    ![Download miniShop2](readme_images/download_mini_shop.png)
    ![Install miniShop2](readme_images/install_mini_shop.png)
    
-3. Создайте интернет-магазин (https://docs.modx.pro/components/minishop2/quick-start).
+3. [Создайте интернет-магазин](https://docs.modx.pro/components/minishop2/quick-start).
 4. Для получения установочного архива нужно в корне сайта создать папку RBKmoney и положить в неё  
    папки _build, assets, core. Затем, нужно перейти по ссылке ваш-сайт.рф/RBKmoney/_build/build.transport.php,
    там можно увидеть логи работы скрипта и возможные ошибки при создании установочного архива.
@@ -66,7 +66,7 @@
    ![RBKmoney delivery settings](readme_images/delivery_edit.png)
    
 9. Для работы рекуррентов необходимо скачать модуль CronManager (по аналогии с п.3)
-   и настройте его (https://www.modx.cc/documentation/additions/cronmanager/).
+   и [настройте его](https://www.modx.cc/documentation/additions/cronmanager/).
    Сниппет для CronManager называется RBKmoneyPaymentRecurrent 
    
    ![Cron settings](readme_images/cron.png)
