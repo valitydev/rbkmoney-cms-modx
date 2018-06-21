@@ -51,17 +51,6 @@ class RBKmoneyPaymentRecurrent
     private $sender;
 
     /**
-     * @var array
-     */
-    protected $vat_map = [
-        0 => '0%',
-        10 => '10%',
-        18 => '18%',
-        10110 => '10/110',
-        18118 => '18/118',
-    ];
-
-    /**
      * @param modX $modx
      */
     function __construct(modX $modx)
