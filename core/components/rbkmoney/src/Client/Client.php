@@ -62,10 +62,10 @@ class Client implements ClientInterface
     private $modx;
 
     /**
-     * @param modX $modX
-     * @param      $apiKey
-     * @param      $shopId
-     * @param      $url
+     * @param modX   $modX
+     * @param string $apiKey
+     * @param string $shopId
+     * @param string $url
      */
     public function __construct(modX $modX, $apiKey, $shopId, $url)
     {
@@ -73,17 +73,6 @@ class Client implements ClientInterface
         $this->apiKey = $apiKey;
         $this->shopId = $shopId;
         $this->url = $url;
-
-        $this->setHeaders();
-    }
-
-    /**
-     * Устанавливает хедеры
-     *
-     * @return void
-     */
-    private function setHeaders()
-    {
         $this->headers = [
             self::CONTENT_TYPE,
             self::AUTHORIZATION . $this->apiKey,
